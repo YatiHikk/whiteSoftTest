@@ -1,29 +1,37 @@
 const fs = require('fs');
 
+let result = []
+
 let rawData = fs.readFileSync('data.json');
 let data = JSON.parse(rawData);
-
 let rawReplacement = fs.readFileSync('replacement.json');
 let replacement = JSON.parse(rawReplacement);
 
-const replaceWrongStrings = (data) => {
+// Перебор изменений
+const replacementFind = () => {
   let replacements = []
   replacements = replacement.filter((rep) => data.indexOf(rep.replacement) !== -1)
-  replacements = replacements[replacements.length - 1]
-  if (replacements !== undefined) {
-    return data.replace(replacements.replacement, replacements.source)
+  return replacements = replacements[replacements.length - 1]
+}
+
+// Нахождение неправильной строки
+const replaceWrongStrings = (data) => {
+  let correctReplacement = replacementFind()
+  if (correctReplacement !== undefined) {
+    return data.replace(correctReplacement.replacement, correctReplacement.source)
   } else {
     return data
   }
 }
 
+// Поиск замены
 const isCorrect = (data) => {
   let arr = rep.map((r) => data.indexOf(r) === -1)
   let isCorrect = arr.indexOf(false) === -1 ? true : false
   return isCorrect
 }
 
-let result = []
+// Замена ошибок на корректные варианты
 let rep = replacement.map((r) => r.replacement)
 for (let i = 0; i < data.length; i++) {
   result[i] = data[i]
